@@ -1,0 +1,10 @@
+E:\_CODES\GitHub\QuizAppCSharp\QuizAppCSharp\bin\Debug\QuizAppCSharp.exe.config
+E:\_CODES\GitHub\QuizAppCSharp\QuizAppCSharp\bin\Debug\QuizAppCSharp.exe
+E:\_CODES\GitHub\QuizAppCSharp\QuizAppCSharp\bin\Debug\QuizAppCSharp.pdb
+E:\_CODES\GitHub\QuizAppCSharp\QuizAppCSharp\obj\Debug\QuizAppCSharp.csproj.AssemblyReference.cache
+E:\_CODES\GitHub\QuizAppCSharp\QuizAppCSharp\obj\Debug\QuizAppCSharp.Properties.Resources.resources
+E:\_CODES\GitHub\QuizAppCSharp\QuizAppCSharp\obj\Debug\QuizAppCSharp.csproj.GenerateResource.cache
+E:\_CODES\GitHub\QuizAppCSharp\QuizAppCSharp\obj\Debug\QuizAppCSharp.csproj.CoreCompileInputs.cache
+E:\_CODES\GitHub\QuizAppCSharp\QuizAppCSharp\obj\Debug\QuizAppCSharp.exe
+E:\_CODES\GitHub\QuizAppCSharp\QuizAppCSharp\obj\Debug\QuizAppCSharp.pdb
+E:\_CODES\GitHub\QuizAppCSharp\QuizAppCSharp\obj\Debug\QuizAppCSharp.QuizBase.resources
