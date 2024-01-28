@@ -33,3 +33,8 @@ Correct Answers: 3
 Total Questions: 4
 Percentage: 75%
 ------------------------------
+Quiz Results:
+Correct Answers: 3
+Total Questions: 4
+Percentage: 75%
+------------------------------

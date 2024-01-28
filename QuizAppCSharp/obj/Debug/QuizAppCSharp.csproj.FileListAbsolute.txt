@@ -7,4 +7,4 @@ E:\_CODES\GitHub\QuizAppCSharp\QuizAppCSharp\obj\Debug\QuizAppCSharp.csproj.Gene
 E:\_CODES\GitHub\QuizAppCSharp\QuizAppCSharp\obj\Debug\QuizAppCSharp.csproj.CoreCompileInputs.cache
 E:\_CODES\GitHub\QuizAppCSharp\QuizAppCSharp\obj\Debug\QuizAppCSharp.exe
 E:\_CODES\GitHub\QuizAppCSharp\QuizAppCSharp\obj\Debug\QuizAppCSharp.pdb
-E:\_CODES\GitHub\QuizAppCSharp\QuizAppCSharp\obj\Debug\QuizAppCSharp.QuizBase.resources
+E:\_CODES\GitHub\QuizAppCSharp\QuizAppCSharp\obj\Debug\QuizAppCSharp.Form1.resources
