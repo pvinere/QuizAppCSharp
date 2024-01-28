@@ -9,8 +9,16 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using static QuizAppCSharp.QuizBase;
 
+
 namespace QuizAppCSharp
 {
+    public interface IQuestionDisplayable
+    {
+        void DisplayQuestion(QuizQuestion quizQuestion);
+    }
+
+
+
     public interface IQuiz
     {
         int CorrectQuestion { get; set; }
@@ -22,9 +30,9 @@ namespace QuizAppCSharp
         QuizBase.QuizQuestion AskQuestion(int questionNumber);
     }
 
-    public interface IAnswerable
+    public interface IAnswerable<T>
     {
-        bool CheckAnswer(int selectedOption);
+        bool CheckAnswer(T selectedOption);
     }
 
 
@@ -36,17 +44,22 @@ namespace QuizAppCSharp
         public int Points { get; set; }
         public int Percent { get; set; }
         public int TotalQuestions { get; set; }
-        
+
+        //colectie
+        public List<QuizQuestion> Questions { get; set; } = new List<QuizQuestion>();
+
         // Constructor implicit
         public QuizBase()
         {
             TotalQuestions = 4;
+            InitializeQuestions();
         }
 
         public abstract QuizQuestion AskQuestion(int questionNumber);
-       
 
-        public class QuizQuestion : IAnswerable
+        protected abstract void InitializeQuestions();
+
+        public class QuizQuestion : IAnswerable<int>
         {
             public Image Image { get; set; }
             public string Question { get; set; }
@@ -60,73 +73,87 @@ namespace QuizAppCSharp
         }
 
 
-        public class QuizManager: QuizBase
+        public class QuizManager : QuizBase, IQuestionDisplayable
         {
+
+            public void DisplayQuestion(QuizQuestion quizQuestion)
+            {
+                // Call the method in the Form1 class to update the UI
+                ((IQuestionDisplayable)this.Owner).DisplayQuestion(quizQuestion);
+            }
 
 
             public override QuizQuestion AskQuestion(int questionNumber)
             {
 
-                QuizQuestion quizQuestion = null;
+                int index = questionNumber - 1;
 
-                switch (questionNumber)
+                if (index >= 0 && index < Questions.Count)
                 {
-                    case 1:
-                        quizQuestion = new QuizQuestion
-                        {
-                            Image = Properties.Resources.romania_flag,
-                            Question = "Care tara are acest steag?",
-                            Options = new List<string> { "Germania", "Franta", "Italia", "Romania" },
-                            CorrectOption = 4
-                        };
-
-                        break;
-
-                    case 2:
-                        quizQuestion = new QuizQuestion
-                        {
-                            Image = Properties.Resources.klaus,
-                            Question = "Care e presedintele Romaniei?",
-                            Options = new List<string> { "Joe Biden", "Klaus Iohannis", "Emmanuel Macron", "Andrzej Duda" },
-                            CorrectOption = 2
-                        };
-
-                        break;
-
-                    case 3:
-                        quizQuestion = new QuizQuestion
-                        {
-                            Image = Properties.Resources.romania_map_grey,
-                            Question = "Cu cate tari se invecineaza Romania?",
-                            Options = new List<string> { "4", "5", "3", "6" },
-                            CorrectOption = 2
-                        };
-
-                        break;
-
-                    case 4:
-                        quizQuestion = new QuizQuestion
-                        {
-                            Image = Properties.Resources.ro_eu_flags,
-                            Question = "In ce an a intrat Romania in Uniunea Europeana?",
-                            Options = new List<string> { "1999", "2007", "2010", "2005" },
-                            CorrectOption = 2
-                        };
-
-                        break;
+                    return Questions[index];
                 }
+                else
+                {
+                    // Returnăm null dacă numărul întrebării nu este valid
+                    return null;
+                }
+            }
 
-                return quizQuestion;
 
+            protected override void InitializeQuestions()
+            {
+                // Adaugăm întrebările în colecție
+                Questions.Add(new QuizQuestion
+                {
+                    Image = Properties.Resources.romania_flag,
+                    Question = "Care țară are acest steag?",
+                    Options = new List<string> { "Germania", "Franța", "Italia", "România" },
+                    CorrectOption = 4
+                });
+
+                Questions.Add(new QuizQuestion
+                {
+                    Image = Properties.Resources.klaus,
+                    Question = "Care e președintele României?",
+                    Options = new List<string> { "Joe Biden", "Klaus Iohannis", "Emmanuel Macron", "Andrzej Duda" },
+                    CorrectOption = 2
+                });
+
+                Questions.Add(new QuizQuestion
+                {
+                    Image = Properties.Resources.romania_map_grey,
+                    Question = "Cu câte țări se învecinează România?",
+                    Options = new List<string> { "4", "5", "3", "6" },
+                    CorrectOption = 2
+                });
+
+                Questions.Add(new QuizQuestion
+                {
+                    Image = Properties.Resources.ro_eu_flags,
+                    Question = "În ce an a intrat România în Uniunea Europeană?",
+                    Options = new List<string> { "1999", "2007", "2010", "2005" },
+                    CorrectOption = 2
+                });
             }
 
         }
+
+        public Form1 Owner { get; internal set; }
     }
 
-        
 
-    public partial class Form1 : Form
+
+    public partial class Form1 : Form, IQuestionDisplayable
     {
+        public void DisplayQuestion(QuizQuestion quizQuestion)
+        {
+            pictureBox1.Image = quizQuestion.Image;
+            labelQuestion.Text = quizQuestion.Question;
+            button1.Text = quizQuestion.Options[0];
+            button2.Text = quizQuestion.Options[1];
+            button3.Text = quizQuestion.Options[2];
+            button4.Text = quizQuestion.Options[3];
+        }
 
         private QuizBase quizManager;
         private QuizQuestion currentQuestion;
@@ -136,6 +163,7 @@ namespace QuizAppCSharp
         {
             InitializeComponent();
             quizManager = new QuizBase.QuizManager();
+            quizManager.Owner = this;
 
             // Asigură-te că AskQuestion întoarce o instanță validă a QuizQuestion
             currentQuestion = quizManager.AskQuestion(quizManager.QNumber);
@@ -153,25 +181,29 @@ namespace QuizAppCSharp
 
         }
 
+
+
         private void checkAnswerEvent(object sender, EventArgs e)
         {
             var buttonObj = (Button)sender;
 
             int buttonTag = Convert.ToInt32(buttonObj.Tag);
 
-            if(buttonTag == currentQuestion.CorrectOption)
+            if (buttonTag == currentQuestion.CorrectOption)
             {
                 quizManager.Points++;
             }
 
-            if(quizManager.QNumber == quizManager.TotalQuestions)
+            if (quizManager.QNumber == quizManager.TotalQuestions)
             {
-                
+
 
                 MessageBox.Show(
                   "The End" + Environment.NewLine +
                   "Correct answers: " + quizManager.Points + "!" + Environment.NewLine +
                   "Press OK to restart the quiz!");
+
+                SaveResultsToFile();
 
                 quizManager.Points = 0;
                 quizManager.QNumber = 0;
@@ -186,14 +218,56 @@ namespace QuizAppCSharp
 
         private void UpdateUI()
         {
-            pictureBox1.Image = currentQuestion.Image;
-            labelQuestion.Text = currentQuestion.Question;
-            button1.Text = currentQuestion.Options[0];
-            button2.Text = currentQuestion.Options[1];
-            button3.Text = currentQuestion.Options[2];
-            button4.Text = currentQuestion.Options[3];
+            Action updateAction = () =>
+            {
+                pictureBox1.Image = currentQuestion.Image;
+                labelQuestion.Text = currentQuestion.Question;
+                button1.Text = currentQuestion.Options[0];
+                button2.Text = currentQuestion.Options[1];
+                button3.Text = currentQuestion.Options[2];
+                button4.Text = currentQuestion.Options[3];
+            };
+
+            if (InvokeRequired)
+            {
+                Invoke(updateAction);
+            }
+            else
+            {
+                updateAction();
+            }
         }
 
-        
+        public class SaveResultsToFileException : Exception
+        {
+            public SaveResultsToFileException(string message) : base(message)
+            {
+            }
+        }
+
+        private void SaveResultsToFile()
+        {
+            string fileName = "QuizResults.txt";
+
+            try
+            {
+                using (System.IO.StreamWriter file = new System.IO.StreamWriter(fileName, true))
+                {
+                    file.WriteLine("Quiz Results:");
+                    file.WriteLine($"Correct Answers: {quizManager.Points}");
+                    file.WriteLine($"Total Questions: {quizManager.TotalQuestions}");
+                    file.WriteLine($"Percentage: {((double)quizManager.Points / quizManager.TotalQuestions) * 100}%");
+                    file.WriteLine(new string('-', 30));
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new SaveResultsToFileException($"Error saving results to file: {ex.Message}");
+            }
+        }
+
+
+
+
     }
 }

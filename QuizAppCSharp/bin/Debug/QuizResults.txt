@@ -1,0 +1,35 @@
+Quiz Results:
+Correct Answers: 4
+Total Questions: 4
+Percentage: 100%
+------------------------------
+Quiz Results:
+Correct Answers: 3
+Total Questions: 4
+Percentage: 75%
+------------------------------
+Quiz Results:
+Correct Answers: 3
+Total Questions: 4
+Percentage: 75%
+------------------------------
+Quiz Results:
+Correct Answers: 3
+Total Questions: 4
+Percentage: 75%
+------------------------------
+Quiz Results:
+Correct Answers: 3
+Total Questions: 4
+Percentage: 75%
+------------------------------
+Quiz Results:
+Correct Answers: 3
+Total Questions: 4
+Percentage: 75%
+------------------------------
+Quiz Results:
+Correct Answers: 3
+Total Questions: 4
+Percentage: 75%
+------------------------------
