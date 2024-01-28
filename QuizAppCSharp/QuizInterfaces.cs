@@ -5,11 +5,15 @@ using System.Drawing;
 
 namespace QuizAppCSharp
 {
+
+    //interfata ce defineste metoda de afisare a unei intrebari
+    //INTERFETE
     public interface IQuestionDisplayable
     {
         void DisplayQuestion(QuizBase.QuizQuestion quizQuestion);
     }
 
+    //interfata ce defineste metoda AskQuestion si cateva proprietati
     public interface IQuiz
     {
         int CorrectQuestion { get; set; }
@@ -21,6 +25,8 @@ namespace QuizAppCSharp
         QuizBase.QuizQuestion AskQuestion(int questionNumber);
     }
 
+    //interfata generica pentru a verifica raspunsul
+    //GENERICITATE
     public interface IAnswerable<T>
     {
         bool CheckAnswer(T selectedOption);

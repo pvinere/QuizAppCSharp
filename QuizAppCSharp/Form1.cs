@@ -10,13 +10,19 @@ using System.Windows.Forms;
 using static QuizAppCSharp.QuizBase;
 
 
+//fisierul cu rezultatul se afla in folder-ul Debug
+
 namespace QuizAppCSharp
 {
     public partial class Form1 : Form, IQuestionDisplayable
     {
+        //instanta a clasei QuizBase
         private QuizBase quizManager;
+
+        //pentru a tine evidenta intrebarii curente
         private QuizQuestion currentQuestion;
 
+        //actualizeaza interfata grafica cu informatiile despre intrebare curenta
         public void DisplayQuestion(QuizQuestion quizQuestion)
         {
             pictureBox1.Image = quizQuestion.Image;
@@ -31,11 +37,13 @@ namespace QuizAppCSharp
         
         public Form1()
         {
+            //initailizeaza componentele visuale 
             InitializeComponent();
+
             quizManager = new QuizManager();
             quizManager.Owner = this;
 
-           
+           //initailizeaza prima intrebare
             currentQuestion = quizManager.AskQuestion(quizManager.QNumber);
 
             
@@ -51,6 +59,9 @@ namespace QuizAppCSharp
 
         }
 
+        //cand un buton este apsat
+        //verifica daca raspunsul este corect si actualizeaza punctajul
+        //la final afiseaza un mesaj cu rezultatul
         private void checkAnswerEvent(object sender, EventArgs e)
         {
             var buttonObj = (Button)sender;
@@ -84,8 +95,12 @@ namespace QuizAppCSharp
             UpdateUI();
         }
 
+
+        //actualizeaza interfata grafica cu informatiile despre intrebare curenta
         private void UpdateUI()
         {
+            //expresie lambda pentru a actualiza interfata grafica
+            //EXPRESII LAMBDA
             Action updateAction = () =>
             {
                 pictureBox1.Image = currentQuestion.Image;
@@ -96,6 +111,7 @@ namespace QuizAppCSharp
                 button4.Text = currentQuestion.Options[3];
             };
 
+            //asigura ca interfata grafica este actualizata de pe thread-ul principal
             if (InvokeRequired)
             {
                 Invoke(updateAction);
@@ -106,6 +122,8 @@ namespace QuizAppCSharp
             }
         }
 
+        //exceptie cu definire proprie
+        //LUCRU CU EXCEPTII
         public class SaveResultsToFileException : Exception
         {
             public SaveResultsToFileException(string message) : base(message)
@@ -113,6 +131,9 @@ namespace QuizAppCSharp
             }
         }
 
+        //salveaza rezultatele in fisier
+        //FISIERE TEXT
+        //LUCRU CU EXCEPTII
         private void SaveResultsToFile()
         {
             string fileName = "QuizResults.txt";

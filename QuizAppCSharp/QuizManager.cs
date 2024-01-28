@@ -6,15 +6,20 @@ using System.Threading.Tasks;
 
 namespace QuizAppCSharp
 {
+    //clasa care extinde clasa abstracta QuizBase si implementeaza interfata IQuestionDisplayable
+    //MOSTENIRE SIMPLA
     public class QuizManager : QuizBase, IQuestionDisplayable
     {
-
+        //metoda pentru a afisa o intrebare
         public void DisplayQuestion(QuizQuestion quizQuestion)
         {
+            //apeleaza DisplayQuestion pe un obiectul Owner
             ((IQuestionDisplayable)this.Owner).DisplayQuestion(quizQuestion);
         }
 
-
+        //suprascrie metoda AskQuestion din clasa abstracta QuizBase
+        //se ocupa de obtinerea unei intrebari din lista de intrebari
+        //POLIMORFISM
         public override QuizQuestion AskQuestion(int questionNumber)
         {
 
@@ -31,6 +36,7 @@ namespace QuizAppCSharp
             }
         }
 
+        //pentru a initializa intrebarile
         protected override void InitializeQuestions()
         {
            
